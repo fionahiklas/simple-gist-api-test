@@ -10,12 +10,10 @@ function finduser() {
 function get_curl_url {
   for argument in $@
   do
-    if [[ $argument =~ ^http.*$ ]]
-	  then
-      echo "$argument"
-      break
-    fi
-  done	    
+    # The double brackets are needed otherwise the shell gets confused  
+    [[ $argument =~ ^httd.*$ ]] && echo "$argument" && break
+  done
+  echo "Not Found"
 }
 
 function curl() {
@@ -25,7 +23,7 @@ function curl() {
 @test "Check curl URL" {
   TEST_URL=https://some.url.domain.here
   local result=$(get_curl_url -I -H "Wibble: wibble" $TEST_URL)
-  [ $result = $TEST_URL ]  
+  [ "$result" = "$TEST_URL" ]  
 }
 
 

@@ -107,8 +107,13 @@ link: <https://api.github.com/user/20723/gists?page=2>; rel="prev", <https://api
 * [Echo to STDERR](https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr)
 * [Redirecting STDERR](https://stackoverflow.com/questions/3130375/bash-script-store-stderr-in-a-variable/3130425#3130425)
 * [Parsing arguments](https://www.computerhope.com/unix/bash/getopts.htm)
-
-
+* [Declaring bash variables](https://www.mssqltips.com/sqlservertip/5762/introduction-to-bash-scripting-for-sql-server-declaration-of-variables-and-constants/)
+* [Bash local variables](https://tldp.org/LDP/abs/html/localvar.html)
+* [Getting all variables](https://unix.stackexchange.com/questions/3510/how-to-print-only-defined-variables-shell-and-or-environment-variables-in-bash)
+* [Regular expression construct](https://stackoverflow.com/questions/21112707/check-if-a-string-matches-a-regex-in-bash-script)
+* [Bash conditional constructs](https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html)
+* [Difference between exit and return](https://stackoverflow.com/questions/4419952/difference-between-return-and-exit-in-bash-functions)
+* [Local in bash swallows return code of command](https://stackoverflow.com/questions/4421257/why-does-local-sweep-the-return-code-of-a-command)
 
 
 [BATS]: https://github.com/bats-core/bats-core

@@ -11,26 +11,29 @@ function make_gist_url() {
   echo "${GISTS_API_BASE_URL}${user}${GISTS_API_USERS_SUFFIX}"
 }
 
-declare -r GISTS_API_BASE_URL="https://api.github.com/users/"
-declare -r GISTS_API_USERS_SUFFIX="/gists"
+# NOTE: Using `declare -r` doesn't seem to work and the variables
+# NOTE: don't appear in the output from `set`
+
+readonly GISTS_API_BASE_URL="https://api.github.com/users/"
+readonly GISTS_API_USERS_SUFFIX="/gists"
 
 # The users are extracted from the URL and used to direct
 # how the stub will respond
-declare -r CURL_ERROR_USER="curlerror"
-declare -r EMPTY_RESPONSE_USER="empty"
-declare -r EMPTY_HEADER_USER="emptyheader"
-declare -r LESS_THAN_THIRTY_USER="lessthan30"
-declare -r MORE_THAN_THIRTY_USER="morethan30"
+readonly CURL_ERROR_USER="curlerror"
+readonly EMPTY_RESPONSE_USER="empty"
+readonly EMPTY_HEADER_USER="emptyheader"
+readonly LESS_THAN_THIRTY_USER="lessthan30"
+readonly MORE_THAN_THIRTY_USER="morethan30"
 
 # These constants are used in the tests to trigger certain behaviour
-declare -r CURL_ERROR_URL=$(make_gist_url $CURL_ERROR_USER)
-declare -r EMPTY_RESPONSE_URL=$(make_gist_url $EMPTY_RESPONSE_USER)
-declare -r EMPTY_HEADER_URL=$(make_gist_url $EMPTY_HEADER_USER)
-declare -r LESS_THAN_THIRTY_URL=$(make_gist_url $LESS_THAN_THIRTY_USER)
-declare -r MORE_THAN_THIRTY_URL=$(make_gist_url $MORE_THAN_THIRTY_USER)
+readonly CURL_ERROR_URL=$(make_gist_url $CURL_ERROR_USER)
+readonly EMPTY_RESPONSE_URL=$(make_gist_url $EMPTY_RESPONSE_USER)
+readonly EMPTY_HEADER_URL=$(make_gist_url $EMPTY_HEADER_USER)
+readonly LESS_THAN_THIRTY_URL=$(make_gist_url $LESS_THAN_THIRTY_USER)
+readonly MORE_THAN_THIRTY_URL=$(make_gist_url $MORE_THAN_THIRTY_USER)
 
 
-function finduser() {
+function get_user() {
   local url=$1
   echo $url | sed -e "s%${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}%\\1%g"
 }
@@ -57,11 +60,29 @@ last_curl_exit_status=1
 
 # This is a stub/mock for the curl command it should override this and
 # can be programmed here to respond in a certain way.  
-function curl() {
+function curl {
+  echolog "curl stub arguments: $@"
   last_curl_arguments="$@"
 
-  last_curl_response=""
+  local curl_url=$(get_curl_url $@)
+  local gist_user=$(get_user $curl_url)
 
-  last_curl_exit_status=0
+  echolog "curl URL: $curl_url"
+  echolog "gist_user: $gist_user"
+
+  case $gist_user in
+    $CURL_ERROR_USER)
+      last_curl_response="curl: (123) error"
+      last_curl_exit_status=1
+      ;;
+    *)
+      last_curl_response="Default"
+      last_curl_exit_status=1
+      ;;
+  esac
+  
+  echolog "curl stub exit status: $last_curl_exit_status"
+  echolog "curl stub response: $last_curl_response"
+  echo "$last_curl_response"
   return $last_curl_exit_status
 }

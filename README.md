@@ -114,6 +114,7 @@ link: <https://api.github.com/user/20723/gists?page=2>; rel="prev", <https://api
 * [Bash conditional constructs](https://www.gnu.org/software/bash/manual/html_node/Conditional-Constructs.html)
 * [Difference between exit and return](https://stackoverflow.com/questions/4419952/difference-between-return-and-exit-in-bash-functions)
 * [Local in bash swallows return code of command](https://stackoverflow.com/questions/4421257/why-does-local-sweep-the-return-code-of-a-command)
+* [Propagating shell functions](https://docstore.mik.ua/orelly/unix3/upt/ch29_13.htm)
 
 
 [BATS]: https://github.com/bats-core/bats-core

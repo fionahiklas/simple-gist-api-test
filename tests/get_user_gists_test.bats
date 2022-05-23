@@ -6,6 +6,10 @@
 load helper_functions.sh
 load curl_stub.sh
 
+function test_script {
+  bash get_user_gists.sh "$@"
+}
+
 @test "Check curl URL" {
   TEST_URL=https://some.url.domain.here
   local result=$(get_curl_url -I -H "Wibble: wibble" $TEST_URL)
@@ -39,8 +43,19 @@ load curl_stub.sh
 }
 
 @test "Run get_user_gists script without arguments" {
-  run ./get_user_gists.sh
+  run test_script
   [ "$status" -eq 1 ]
+  echolog "lines: $output"
   [[ "$lines[0]" =~ ^Usage: ]]
 }
 
+@test "Run get_user_gists script with user and curl called" {
+  run test_script -u $EMPTY_RESPONSE_USER
+  echolog "run command: $BATS_RUN_COMMAND"  
+  echolog "status: $status"
+  echolog "output: $output"
+  [ "$status" -eq 0 ]
+  # TODO: These won't get updated as they are in a sub-shell
+  #[ "$curl_stub_call_count" -eq 1 ]
+  #[ "$last_curl_url" = "$EMPTY_RESPONSE_URL" ]
+}

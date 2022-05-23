@@ -20,3 +20,7 @@ function wrap_failing_function {
   function_status=$?
   set -"$original_flags"
 }
+
+# Need to export the functions so they are available
+# in subshells
+export -f echolog

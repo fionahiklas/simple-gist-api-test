@@ -3,26 +3,8 @@
 # -*- mode: bats-mode; -*-
 #
 
-function echolog() { echo "LOG: $@" 1>&2; }
-    
-
-function finduser() {
-  echo ""
-}
-
-function get_curl_url {
-  for argument in $@
-  do
-    echolog "Argument: $argument"                
-    # The double brackets are needed otherwise the shell gets confused  
-    [[ $argument =~ ^http.*$ ]] && echo "$argument" && return
-  done
-  echo "Not Found"
-}
-
-function curl() {
-  echo ""
-}
+load helper_functions.sh
+load curl_stub.sh
 
 @test "Check curl URL" {
   TEST_URL=https://some.url.domain.here
@@ -33,7 +15,7 @@ function curl() {
 
 
 @test "Run get_user_gists script without arguments" {
-  run ./get_users_gists.sh
+  run ./get_user_gists.sh
   [ "$status" -eq 1 ]
   [[ "$lines[0]" =~ ^Usage: ]]
 }

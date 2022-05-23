@@ -23,6 +23,12 @@ You can run the tests for the script using
 bats tests/get_user_gists_test.bats
 ```
 
+If you want to see the log output from the tests then run this command
+
+```
+bats --show-output-of-passing-tests tests/get_user_gists_test.bats
+```
+
 
 ## Test Data
 
@@ -95,6 +101,12 @@ link: <https://api.github.com/user/20723/gists?page=2>; rel="prev", <https://api
 * [Gists API documentation][Gists API]
 * [Github pagination][Github Pagination]
 * [Pagination traversal][Github Pagination Traversal]
+
+### Shell script
+
+* [Echo to STDERR](https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr)
+* [Redirecting STDERR](https://stackoverflow.com/questions/3130375/bash-script-store-stderr-in-a-variable/3130425#3130425)
+* [Parsing arguments](https://www.computerhope.com/unix/bash/getopts.htm)
 
 
 

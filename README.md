@@ -115,6 +115,9 @@ link: <https://api.github.com/user/20723/gists?page=2>; rel="prev", <https://api
 * [Difference between exit and return](https://stackoverflow.com/questions/4419952/difference-between-return-and-exit-in-bash-functions)
 * [Local in bash swallows return code of command](https://stackoverflow.com/questions/4421257/why-does-local-sweep-the-return-code-of-a-command)
 * [Propagating shell functions](https://docstore.mik.ua/orelly/unix3/upt/ch29_13.htm)
+* [Size of FIFO](https://stackoverflow.com/questions/48945547/change-named-pipe-buffer-size-in-macos)
+* [Make temporary files](https://www.gnu.org/software/autogen/mktemp.html)
+
 
 
 [BATS]: https://github.com/bats-core/bats-core

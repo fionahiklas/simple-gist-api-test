@@ -46,43 +46,14 @@ function get_curl_url {
   echo "Not Found"
 }
 
-# This will be set by the stub to the arguments that were passed
-# in to the curl command
-last_curl_arguments=""
-
-# Extract the URL from the arguments list
-last_curl_url=""
-
-# User from URL
-last_gist_user=""
-
-# Copy of the returned text from the last 
-last_curl_response=""
-
-# Copy of the last return value
-last_curl_exit_status=1
-
-# Count of the number of calls
-curl_stub_call_count=0
-
-# Reset for tests
-function clear_last_curl {
-  last_curl_arguments=""
-  last_curl_url=""
-  last_gist_user=""
-  last_curl_response=""
-  last_curl_exit_status=1
-  curl_stub_call_count=0
-}
-
 # This is a stub/mock for the curl command it should override this and
 # can be programmed here to respond in a certain way.  
 function curl {
-  echolog "curl stub arguments: $@" 
-  last_curl_arguments="$@"
-  
-  last_curl_url=$(get_curl_url $@)
-  last_gist_user=$(get_user $last_curl_url)
+  echolog "curl stub arguments: $@"
+    
+  local last_curl_arguments="$@"
+  local last_curl_url=$(get_curl_url $@)
+  local last_gist_user=$(get_user $last_curl_url)
 
   echolog "curl URL: $last_curl_url"
   echolog "gist_user: $last_gist_user"
@@ -105,8 +76,11 @@ function curl {
   echolog "curl stub exit status: $last_curl_exit_status"
   echolog "curl stub response: $last_curl_response"
 
-  # Increment call count
-  ((curl_stub_call_count++))
+  # Since the curl stub is going to get called from a subprocess that
+  # runs the script under test, there is no easy way to communicate
+  # back to the tests.  I tried using FIFO's but these blocked the test
+  # so using temp file instead as running the script is synchronous
+  echo "${last_curl_arguments},${last_curl_url},${last_gist_user}" > ${CURL_STUB_TEMP_FILENAME} 
   
   echo "$last_curl_response"
   return $last_curl_exit_status

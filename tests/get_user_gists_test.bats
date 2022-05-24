@@ -6,7 +6,20 @@
 load helper_functions.sh
 load curl_stub.sh
 
-function test_script {
+setup() {
+  export CURL_STUB_TEMP_FILENAME=$(mktemp)
+  echolog "created temp file: $CURL_STUB_TEMP_FILENAME"
+}
+
+teardown() {
+  echolog "removing temp file: $CURL_STUB_TEMP_FILENAME"
+  rm $CURL_STUB_TEMP_FILENAME
+}
+
+# This function is needed to ensure that bash is used to run the
+# script under test as it's the only shell that supports export/import
+# of functions and we need that to be able to mock/stub curl
+test_script() {
   bash get_user_gists.sh "$@"
 }
 
@@ -35,6 +48,8 @@ function test_script {
 @test "Check stub responds correctly" {
 
   wrap_failing_function curl $CURL_ERROR_URL
+
+  cat $CURL_STUB_TEMP_FILENAME
   
   echolog "check stub, curl exit status: $function_status"
   echolog "check stub, curl response: $function_output"

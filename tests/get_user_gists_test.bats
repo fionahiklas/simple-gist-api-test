@@ -75,8 +75,8 @@ test_script() {
   echolog "status: $status"
   echolog "output: $output"
 
-  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
-  echolog "stub_calls: $stub_calls"
+  IFS='\n' command eval 'stub_calls=($(cat $CURL_STUB_TEMP_FILENAME))'
+  echolog "stub_calls: ${stub_calls}"
 
   [ "$status" -eq 0 ]
   # TODO: These won't get updated as they are in a sub-shell

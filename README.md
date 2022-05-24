@@ -8,7 +8,7 @@
 
 ## Tests
 
-Tests are written using [BATS][BATS] this can be installed using [homebrew][homebrew]
+Tests are written using [BATS][BATS] this can be installed using [homebrew][homebrew] on MacOS
 
 ```
 brew install bats-core
@@ -28,6 +28,8 @@ If you want to see the log output from the tests then run this command
 ```
 bats --show-output-of-passing-tests tests/get_user_gists_test.bats
 ```
+
+NOTE: This option doesn't appear to be supported on version 1.2 on Debian
 
 
 ## Test Data

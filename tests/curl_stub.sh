@@ -36,7 +36,7 @@ function get_user() {
   echo $url | sed -e "s%${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}%\\1%g"
 }
 
-function get_curl_url {
+get_curl_url() {
   for argument in $@
   do
     echolog "Argument: $argument"                
@@ -46,9 +46,21 @@ function get_curl_url {
   echo "Not Found"
 }
 
+get_last_curl_arguments() {
+  echo "$@" | awk -F, -e '{ print $1 }'
+}
+
+get_last_curl_url() {
+  echo "$@" | awk -F, -e '{ print $2 }'
+}
+
+get_last_gist_user() {
+  echo "$@" | awk -F, -e '{ print $3 }'
+}
+
 # This is a stub/mock for the curl command it should override this and
 # can be programmed here to respond in a certain way.  
-function curl {
+curl() {
   echolog "curl stub arguments: $@"
     
   local last_curl_arguments="$@"

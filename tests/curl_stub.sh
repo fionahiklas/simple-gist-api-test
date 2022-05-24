@@ -18,15 +18,13 @@ export GISTS_API_USERS_SUFFIX="/gists"
 # The users are extracted from the URL and used to direct
 # how the stub will respond
 export CURL_ERROR_USER="curlerror"
-export EMPTY_RESPONSE_USER="empty"
-export EMPTY_HEADER_USER="emptyheader"
+export NOT_FOUND_USER="notfound"
 export LESS_THAN_THIRTY_USER="lessthan30"
 export MORE_THAN_THIRTY_USER="morethan30"
 
 # These constants are used in the tests to trigger certain behaviour
 export CURL_ERROR_URL=$(make_gist_url $CURL_ERROR_USER)
-export EMPTY_RESPONSE_URL=$(make_gist_url $EMPTY_RESPONSE_USER)
-export EMPTY_HEADER_URL=$(make_gist_url $EMPTY_HEADER_USER)
+export NOT_FOUND_URL=$(make_gist_url $NOT_FOUND_USER)
 export LESS_THAN_THIRTY_URL=$(make_gist_url $LESS_THAN_THIRTY_USER)
 export MORE_THAN_THIRTY_URL=$(make_gist_url $MORE_THAN_THIRTY_USER)
 
@@ -78,10 +76,19 @@ curl() {
       last_curl_response="curl: (123) error"
       last_curl_exit_status=1
       ;;
-    $EMPTY_RESPONSE_USER)
+    $NOT_FOUND_USER)
+      last_curl_response="HTTP/2 404"
+      last_curl_exit_status=0
+      ;;
+    $LESS_THAN_THIRTY_USER)
       last_curl_response=""
       last_curl_exit_status=0
-      ;;    
+      ;;
+    $MORE_THAN_THIRTY_USER)
+      last_curl_response=""
+      last_curl_exit_status=0
+      ;;
+        
     *)
       last_curl_response="Default"
       last_curl_exit_status=1

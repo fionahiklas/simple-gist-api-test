@@ -42,8 +42,7 @@ test_script() {
   # construct is forming the last expression in the function
   # (test) which is the return value
   [[ "$result" =~ CURL_ERROR_URL ]] &&
-  [[ "$result" =~ EMPTY_RESPONSE_URL ]] &&
-  [[ "$result" =~ EMPTY_HEADER_URL ]] &&
+  [[ "$result" =~ NOT_FOUND_URL ]] &&
   [[ "$result" =~ LESS_THAN_THIRTY_URL ]] &&
   [[ "$result" =~ MORE_THAN_THIRTY_URL ]]
 }
@@ -75,15 +74,15 @@ test_script() {
   [[ "${lines[0]}" =~ ^Usage: ]]
 }
 
-@test "Run get_user_gists script with user and curl called" {
-  run test_script -u $EMPTY_RESPONSE_USER
+@test "Run get_user_gists script user not found" {
+  run test_script -u $NOT_FOUND_USER
   echolog "run command: $BATS_RUN_COMMAND"  
   echolog "status: $status"
   echolog "output: $output"
   echolog "lines[0]: ${lines[0]}"
   
-  [ "$status" -eq 0 ]
-  [[ "${lines[0]}" =~ ^HELLO ]] || return 1
+  [ "$status" -eq 1 ]
+  [[ "${lines[0]}" =~ ^User\ not\ found ]] || return 1
   
   local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
   echolog "stub_calls: ${stub_calls}"

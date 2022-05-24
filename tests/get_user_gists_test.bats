@@ -49,12 +49,17 @@ test_script() {
 
   wrap_failing_function curl $CURL_ERROR_URL
 
-  cat $CURL_STUB_TEMP_FILENAME
-  
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
+  echolog "stub_calls: $stub_calls"
   echolog "check stub, curl exit status: $function_status"
   echolog "check stub, curl response: $function_output"
+  
+  # TODO: Add function to split this up and check values
+  [ "$stub_calls" = "https://api.github.com/users/curlerror/gists,https://api.github.com/users/curlerror/gists,curlerror" ]
   [ "$function_status" -eq 1 ]
   [[ "$function_output" =~ ^curl: ]]
+  
+  
 }
 
 @test "Run get_user_gists script without arguments" {
@@ -69,6 +74,10 @@ test_script() {
   echolog "run command: $BATS_RUN_COMMAND"  
   echolog "status: $status"
   echolog "output: $output"
+
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
+  echolog "stub_calls: $stub_calls"
+
   [ "$status" -eq 0 ]
   # TODO: These won't get updated as they are in a sub-shell
   #[ "$curl_stub_call_count" -eq 1 ]

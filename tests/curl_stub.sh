@@ -80,7 +80,7 @@ function curl {
   # runs the script under test, there is no easy way to communicate
   # back to the tests.  I tried using FIFO's but these blocked the test
   # so using temp file instead as running the script is synchronous
-  echo "${last_curl_arguments},${last_curl_url},${last_gist_user}" > ${CURL_STUB_TEMP_FILENAME} 
+  echo "${last_curl_arguments},${last_curl_url},${last_gist_user}" >> ${CURL_STUB_TEMP_FILENAME} 
   
   echo "$last_curl_response"
   return $last_curl_exit_status

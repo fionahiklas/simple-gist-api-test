@@ -34,10 +34,13 @@ test_script() {
   # This set command syntax/option "posix" doesn't work on zsh
   # but does on bash   
   local result=$(set -o posix; set)
+  # This outputs ALOT, only use for debugging
   #echolog "Result $result"
   
   # It seems that having these expressions without the && passes
-  # no matter what result contains.  Not sure why this is the case
+  # no matter what result contains.  This is because this whole
+  # construct is forming the last expression in the function
+  # (test) which is the return value
   [[ "$result" =~ CURL_ERROR_URL ]] &&
   [[ "$result" =~ EMPTY_RESPONSE_URL ]] &&
   [[ "$result" =~ EMPTY_HEADER_URL ]] &&
@@ -54,19 +57,22 @@ test_script() {
   echolog "check stub, curl exit status: $function_status"
   echolog "check stub, curl response: $function_output"
   
-  # TODO: Add function to split this up and check values
   [ "$stub_calls" = "https://api.github.com/users/curlerror/gists,https://api.github.com/users/curlerror/gists,curlerror" ]
   [ "$function_status" -eq 1 ]
+
+  # This only works as a test because it's at the end of the function
+  # and is effectively the function exit status 
   [[ "$function_output" =~ ^curl: ]]
-  
-  
 }
 
 @test "Run get_user_gists script without arguments" {
   run test_script
   [ "$status" -eq 1 ]
   echolog "lines: $output"
-  [[ "$lines[0]" =~ ^Usage: ]]
+
+  # This only works as a test because it's at the end of the function
+  # and is effectively the function exit status   
+  [[ "${lines[0]}" =~ ^Usage: ]]
 }
 
 @test "Run get_user_gists script with user and curl called" {
@@ -74,12 +80,25 @@ test_script() {
   echolog "run command: $BATS_RUN_COMMAND"  
   echolog "status: $status"
   echolog "output: $output"
-
-  IFS='\n' command eval 'stub_calls=($(cat $CURL_STUB_TEMP_FILENAME))'
+  echolog "lines[0]: ${lines[0]}"
+  
+  [ "$status" -eq 0 ]
+  [[ "${lines[0]}" =~ ^HELLO ]] || return 1
+  
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
   echolog "stub_calls: ${stub_calls}"
 
-  [ "$status" -eq 0 ]
-  # TODO: These won't get updated as they are in a sub-shell
-  #[ "$curl_stub_call_count" -eq 1 ]
-  #[ "$last_curl_url" = "$EMPTY_RESPONSE_URL" ]
+  local number_of_calls=$(echo ${stub_calls} | wc -l)
+  [ "$number_of_calls" -eq 1 ]
+
+  local curl_arguments=$(get_last_curl_arguments "$stub_calls")
+  local curl_url=$(get_curl_url "$curl_arguments")
+
+  echolog "curl_arguments: $curl_arguments"
+  echolog "curl_url: $curl_url"
+  
+  [[ "$curl_arguments" =~ ^\-I ]] || return 1
+  [ "$curl_url" = "$EMPTY_RESPONSE_URL" ]
 }
+
+

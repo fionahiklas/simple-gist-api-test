@@ -15,6 +15,8 @@ function_output=""
 
 function wrap_failing_function {
   original_flags=$-
+
+  # Ignore any failure exit status
   set +eET
   function_output=$($@)
   function_status=$?

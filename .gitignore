@@ -5,3 +5,5 @@
 *.bak
 .\#*
 
+# Temp files
+tmp*

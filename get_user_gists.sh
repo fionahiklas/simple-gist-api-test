@@ -17,6 +17,6 @@ done
 
 [ "$USERNAME" = "" ] && echo "Usage: get_users_gists.sh -u <username>" && exit 1
 
-curl -vvv "${GISTS_API_BASE_URL}${USERNAME}${GISTS_API_USERS_SUFFIX}"
+header_response=$(curl -I "${GISTS_API_BASE_URL}${USERNAME}${GISTS_API_USERS_SUFFIX}")
 
 

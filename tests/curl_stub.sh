@@ -31,31 +31,34 @@ export LESS_THAN_THIRTY_URL=$(make_gist_url $LESS_THAN_THIRTY_USER)
 export MORE_THAN_THIRTY_URL=$(make_gist_url $MORE_THAN_THIRTY_USER)
 
 
-function get_user() {
+get_user() {
   local url=$1
   echo $url | sed -e "s%${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}%\\1%g"
 }
 
 get_curl_url() {
+  orig_ifs=$IFS
+  IFS=' '
   for argument in $@
   do
-    echolog "Argument: $argument"                
+    echolog "get_curl_url, argument: $argument"                
     # The double brackets are needed otherwise the shell gets confused  
     [[ $argument =~ ^http.*$ ]] && echo "$argument" && return
   done
+  IFS=$orig_ifs
   echo "Not Found"
 }
 
 get_last_curl_arguments() {
-  echo "$@" | awk -F, -e '{ print $1 }'
+  echo "$@" | awk -F, '{ print $1 }'
 }
 
 get_last_curl_url() {
-  echo "$@" | awk -F, -e '{ print $2 }'
+  echo "$@" | awk -F, '{ print $2 }'
 }
 
 get_last_gist_user() {
-  echo "$@" | awk -F, -e '{ print $3 }'
+  echo "$@" | awk -F, '{ print $3 }'
 }
 
 # This is a stub/mock for the curl command it should override this and

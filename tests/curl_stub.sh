@@ -89,14 +89,33 @@ curl() {
       last_curl_exit_status=0
       ;;
     $LESS_THAN_THIRTY_USER)
-      last_curl_response=""
+      local query=$(get_query $last_curl_url | sed -e 's/=//g')
+      echolog "lessthan30, query: $query"  
+      if [[ "$query" =~ ^page ]]
+      then
+        data="$query"
+      else
+        data="header"
+      fi
+      data_filename="lessthan30-${data}.txt"
+      echolog "lessthan, data filename: $data_filename"
+      last_curl_response=$(cat tests/data/${data_filename})
       last_curl_exit_status=0
       ;;
     $MORE_THAN_THIRTY_USER)
-      last_curl_response=""
+      local query=$(get_query $last_curl_url | sed -e 's/=//g')
+      echolog "lessthan30, query: $query"  
+      if [[ "$query" =~ ^page ]]
+      then
+        data="$query"
+      else
+        data="header"
+      fi
+      data_filename="morethan30-${data}.txt"
+      echolog "morethan, data filename: $data_filename"
+      last_curl_response=$(cat tests/data/${data_filename})
       last_curl_exit_status=0
       ;;
-        
     *)
       last_curl_response="Default"
       last_curl_exit_status=1
@@ -121,4 +140,6 @@ curl() {
 export -f curl
 export -f get_curl_url
 export -f get_user
+export -f get_query
+
 

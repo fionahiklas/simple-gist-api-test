@@ -51,7 +51,7 @@ test_script() {
   [[ "$result" =~ MORE_THAN_THIRTY_URL ]]
 }
 
-@test "Check stub responds correctly" {
+@test "Check stub responds correctly for error url" {
 
   wrap_failing_function curl $CURL_ERROR_URL
 
@@ -67,6 +67,37 @@ test_script() {
   # and is effectively the function exit status 
   [[ "$function_output" =~ ^curl: ]]
 }
+
+@test "Check stub responds correctlyfor less than 30 url" {
+
+  wrap_failing_function curl $LESS_THAN_THIRTY_URL
+
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
+  echolog "stub_calls: $stub_calls"
+  echolog "check stub, curl exit status: $function_status"
+  echolog "check stub, curl response: $function_output"
+  
+  [ "$stub_calls" = "https://api.github.com/users/lessthan30/gists,https://api.github.com/users/lessthan30/gists,lessthan30" ]
+  [ "$function_status" -eq 0 ]
+
+  # This only works as a test because it's at the end of the function
+  # and is effectively the function exit status 
+  [[ "$function_output" =~ ^HTTP/2\ 200 ]]
+}
+
+@test "Check stub responds correctlyfor less than 30 url with page=1" {
+
+  wrap_failing_function curl "${LESS_THAN_THIRTY_URL}?page=1"
+
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
+  echolog "stub_calls: $stub_calls"
+  echolog "check stub, curl exit status: $function_status"
+  echolog "check stub, curl response: $function_output"
+  
+  [ "$stub_calls" = "https://api.github.com/users/lessthan30/gists?page=1,https://api.github.com/users/lessthan30/gists?page=1,lessthan30" ]
+  [ "$function_status" -eq 0 ]
+}
+
 
 @test "Run get_user_gists script without arguments" {
   run --separate-stderr test_script
@@ -91,7 +122,7 @@ test_script() {
   local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
   echolog "stub_calls: ${stub_calls}"
 
-  local number_of_calls=$(echo ${stub_calls} | wc -l)
+  local number_of_calls=$(echo "${stub_calls}" | wc -l)
   [ "$number_of_calls" -eq 1 ]
 
   local curl_arguments=$(get_last_curl_arguments "$stub_calls")
@@ -102,6 +133,22 @@ test_script() {
   
   [[ "$curl_arguments" =~ ^\-I ]] || return 1
   [ "$curl_url" = "$NOT_FOUND_URL" ]
+  return 0
 }
 
+@test "Run get_user_gists script user returns less than 30 results" {
+  run --separate-stderr test_script -u $LESS_THAN_THIRTY_USER
+  echolog "run command: $BATS_RUN_COMMAND"  
+  echolog "status: $status"
+  
+  [ "$status" -eq 0 ]
+  
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
+  echolog "stub_calls: ${stub_calls}"
+
+  local number_of_calls=$(echo "${stub_calls}" | wc -l)
+  echolog "number of stub_calls: ${number_of_calls}"
+  [ "$number_of_calls" -eq 2 ]
+  return 0
+}
 

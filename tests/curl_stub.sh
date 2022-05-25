@@ -31,7 +31,7 @@ export MORE_THAN_THIRTY_URL=$(make_gist_url $MORE_THAN_THIRTY_USER)
 
 get_user() {
   local url=$1
-  echo $url | sed -e "s%${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}%\\1%g"
+  echo $url | sed -e "s%${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}.*\$%\\1%g"
 }
 
 get_curl_url() {
@@ -73,6 +73,9 @@ curl() {
 
   case $last_gist_user in
     $CURL_ERROR_USER)
+      # Technically a valid URL like this wouldn't cause an error from curl
+      # but we're just using this to trigger a response to check the behaviour
+      # of the script  
       last_curl_response="curl: (123) error"
       last_curl_exit_status=1
       ;;

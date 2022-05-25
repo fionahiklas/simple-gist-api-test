@@ -8,14 +8,29 @@
 
 ## Tests
 
+### Prerequisites
+
 Tests are written using [BATS][BATS] this can be installed using [homebrew][homebrew] on MacOS
 
 ```
 brew install bats-core
 ```
 
-Or on Linux `apt install bats` for Debian or `yum install bats` or `dnf install bats` 
-for an RPM-based distro such as RHEL/CentOS/Rocky or similar.
+Or on Linux `apt install bats` for Debian does not appear to find a new enough
+version of BATS to install.  They are stuck at 1.2 whereas Fedora 36, RHEL 8,
+and OpenSUSE have > 1.5.0.
+
+Should be possible to use `yum install bats` or `dnf install bats` on a 
+recent RPM-based distro to get a version of BATS that is suitable
+
+Alternatively you could clone the [Bats repo](https://github.com/bats-core/bats-core) and add the bin directory to the path (not tested this approach). 
+There is also a [docker image](https://hub.docker.com/r/bats/bats) which can 
+be used by mounting the code to test under the `/code/` volume.
+
+TODO: Add instructions on using Docker image on x86 and ARM linux platforms
+
+
+### Running
 
 You can run the tests for the script using 
 

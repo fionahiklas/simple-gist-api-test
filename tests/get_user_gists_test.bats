@@ -3,6 +3,10 @@
 # -*- mode: bats-mode; -*-
 #
 
+# We need to use the --separate-stderr flag on run and this
+# needs at least version 1.5.0 of Bats
+bats_require_minimum_version 1.5.0
+
 load helper_functions.sh
 load curl_stub.sh
 
@@ -65,7 +69,7 @@ test_script() {
 }
 
 @test "Run get_user_gists script without arguments" {
-  run test_script
+  run --separate-stderr test_script
   [ "$status" -eq 1 ]
   echolog "lines: $output"
 
@@ -75,7 +79,7 @@ test_script() {
 }
 
 @test "Run get_user_gists script user not found" {
-  run test_script -u $NOT_FOUND_USER
+  run --separate-stderr test_script -u $NOT_FOUND_USER
   echolog "run command: $BATS_RUN_COMMAND"  
   echolog "status: $status"
   echolog "output: $output"
@@ -97,7 +101,7 @@ test_script() {
   echolog "curl_url: $curl_url"
   
   [[ "$curl_arguments" =~ ^\-I ]] || return 1
-  [ "$curl_url" = "$EMPTY_RESPONSE_URL" ]
+  [ "$curl_url" = "$NOT_FOUND_URL" ]
 }
 
 

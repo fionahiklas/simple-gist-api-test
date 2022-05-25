@@ -152,3 +152,18 @@ test_script() {
   return 0
 }
 
+@test "Run get_user_gists script user returns more than 30 results" {
+  run --separate-stderr test_script -u $MORE_THAN_THIRTY_USER
+  echolog "run command: $BATS_RUN_COMMAND"
+  echolog "status: $status"
+  
+  [ "$status" -eq 0 ]
+  
+  local stub_calls=$(cat $CURL_STUB_TEMP_FILENAME)
+  echolog "stub_calls: ${stub_calls}"
+
+  local number_of_calls=$(echo "${stub_calls}" | wc -l)
+  echolog "number of stub_calls: ${number_of_calls}"
+  [ "$number_of_calls" -eq 4 ]
+  return 0
+}

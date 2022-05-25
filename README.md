@@ -2,8 +2,27 @@
 
 ## Overview 
 
+This was just a quick exercise to play with the gists API but also to 
+try out the Bats testing framework.
+
+Overall the lessons learned are as follows
+1. Bash/shell scripts have some quirks and I've learned alot
+2. Mocking/stubbing with Bats can be done but isn't easy (there are extra
+   packages for Bats that might have made this easier)
+3. The testing too way more effort than the script itself
+
+That last point is somewhat an argument against TDD for shell scripts :(
+
 
 ## Quickstart
+
+Ensure that the following are installed:
+1. bash
+2. curl
+3. jq 
+
+See installation section below for more details
+
 
 
 ## Tests
@@ -119,6 +138,14 @@ link: <https://api.github.com/user/20723/gists?page=2>; rel="prev", <https://api
 * [Github pagination][Github Pagination]
 * [Pagination traversal][Github Pagination Traversal]
 
+
+### Jq
+
+* [Jq cheat sheet](https://lzone.de/cheat-sheet/jq)
+* [Output CSV using jq](https://stackoverflow.com/questions/32960857/how-to-convert-arbitrary-simple-json-to-csv-using-jq)
+* [Map to CSV output](https://unix.stackexchange.com/questions/163845/using-jq-to-extract-values-and-format-in-csv)
+
+
 ### Shell script
 
 * [Echo to STDERR](https://stackoverflow.com/questions/2990414/echo-that-outputs-to-stderr)
@@ -134,7 +161,7 @@ link: <https://api.github.com/user/20723/gists?page=2>; rel="prev", <https://api
 * [Propagating shell functions](https://docstore.mik.ua/orelly/unix3/upt/ch29_13.htm)
 * [Size of FIFO](https://stackoverflow.com/questions/48945547/change-named-pipe-buffer-size-in-macos)
 * [Make temporary files](https://www.gnu.org/software/autogen/mktemp.html)
-
+* [Create sequence](https://www.cyberciti.biz/tips/how-to-generating-print-range-sequence-of-numbers.html)
 
 
 [BATS]: https://github.com/bats-core/bats-core

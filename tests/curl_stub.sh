@@ -31,7 +31,12 @@ export MORE_THAN_THIRTY_URL=$(make_gist_url $MORE_THAN_THIRTY_USER)
 
 get_user() {
   local url=$1
-  echo $url | sed -e "s%${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}.*\$%\\1%g"
+  echo $url | sed -e "s%^${GISTS_API_BASE_URL}\(.*\)${GISTS_API_USERS_SUFFIX}.*\$%\\1%g"
+}
+
+get_query() {
+  local url=$1
+  echo $url | sed -e "s%^.*\?\(.*\)\$%\\1%"
 }
 
 get_curl_url() {

@@ -23,6 +23,35 @@ Ensure that the following are installed:
 
 See installation section below for more details
 
+Run the script
+
+```
+./get_user_gists.sh -u <username>
+```
+
+
+## Installation
+
+### MacOS
+
+Use [homebrew][homebrew] to install the `jq` utility 
+
+```
+brew install jq
+```
+
+Bash and curl are already installed on a Mac 
+
+
+### Linux
+
+Use the appropriate package manager to install `jq` and possibily `curl`.
+The `bash` shell should already be available
+
+### Windows
+
+Maybe you should uses a virtual machine, Windows Subsystem for Linux or just 
+buy a Mac or a Linux machine :D 
 
 
 ## Tests
